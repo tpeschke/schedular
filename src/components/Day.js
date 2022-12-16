@@ -1,10 +1,20 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Slider from '@mui/material/Slider';
 import Button from '@mui/material/Button';
+import Grid from '@mui/material/Unstable_Grid2';
+
+Day.defaultProps = {
+    holidays: []
+}
 
 export default function Day(props) {
-    const [value, setValue] = useState([1000, 2200]);
+    const [value, setValue] = useState(props.defaultTimes);
     const [unavailable, setUnavailable] = useState(props.unavailable);
+    const [holidays, setHolidays] = useState(props.holidays);
+
+    useEffect(() => {
+        // setHolidays(() => [...props.holidays])
+    })
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -27,7 +37,7 @@ export default function Day(props) {
             <Button onClick={setAvailibility} disableElevation variant="text">{props.dayNumber}</Button>
         </div>)
     }
-    return (<div className='day'>
+    return (<div className='day' id='day-component'>
         <Button onClick={setAvailibility} disableElevation variant="text">{props.dayNumber}</Button>
         <Slider
             valueLabelFormat={valuetext}
@@ -38,6 +48,12 @@ export default function Day(props) {
             min={1000}
             max={2200}
         />
+        <p>{valuetext(value[0])} - {valuetext(value[1])}</p>
+        <div className='grid-div'>
+            <Grid container spacing={1}>
+                {props.holidays ? props.holidays.map(holiday => <Grid key={holiday} xs={16}>{holiday}</Grid>) : <div></div>}
+            </Grid>
+        </div>
     </div>)
 }
 

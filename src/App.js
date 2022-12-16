@@ -1,36 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import Paper from '@mui/material/Paper';
-import { styled } from '@mui/material/styles';
 import Day from './components/Day'
-
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: 'center',
-  color: theme.palette.text.secondary,
-}));
+import holidayapi from './components/secrets'
 
 export default function App() {
-  const [dayArray, setArray] = useState([]);;
   const [monthNumber, setMonthNumber] = useState(new Date().getMonth() + 2 === 13 ? 1 : new Date().getMonth() + 2);
   const [year, setYear] = useState(monthNumber === 1 ? new Date().getFullYear() + 1 : new Date().getFullYear())
+  const [dayArray, setArray] = useState([]);
+  const [holidays, setHolidays] = useState([])
 
   useEffect(() => {
-    if (dayArray.length === 0) {
-      setUpMonthArray()
+    setUpMonthArray()
+  }, [holidays]);
+
+  useEffect(() => {
+    if (holidays.length === 0) {
+      setUpholidays()
     }
-  });
+  })
 
   const daysOfTheWeek = {
-    0: 'Monday',
-    1: 'Tuesday',
-    2: 'Wednesday',
-    3: 'Thrusday',
-    4: 'Friday',
-    5: 'Saturday',
-    6: 'Sunday'
+    0: 'Sunday',
+    1: 'Monday',
+    2: 'Tuesday',
+    3: 'Wednesday',
+    4: 'Thrusday',
+    5: 'Friday',
+    6: 'Saturday',
   }
   const monthsOfTheYear = {
     1: 'January',
@@ -47,9 +43,45 @@ export default function App() {
     12: 'December'
   }
 
+  const unavailableDays = {
+    Monday: true,
+    Tuesday: false,
+    Wednesday: true,
+    Thrusday: false,
+    Friday: false,
+    Saturday: false,
+    Sunday: false
+  }
+
+  const startTimes = {
+    Monday: [1800, 2200],
+    Tuesday: [1800, 2200],
+    Wednesday: [1800, 2200],
+    Thrusday: [1800, 2200],
+    Friday: [1800, 2200],
+    Saturday: [1000, 2200],
+    Sunday: [1000, 2200]
+  }
+
+  async function setUpholidays() {
+    const totalDaysInMonth = new Date(year, monthNumber, 0).getDate()
+    let endpoint = `${holidayapi.endpoint}?country=US&year=${year - 2}&month=${monthNumber}&key=${holidayapi.apiKey}`
+    await fetch(endpoint)
+      .then(res => res.json())
+      .then(data => {
+        let holidayArray = []
+        for (let i = 0; i < totalDaysInMonth; i++) {
+          holidayArray.push([])
+        }
+        data.holidays.forEach(holiday => {
+          let date = +holiday.date.split('-')[2]
+          holidayArray[date - 1].push(holiday.name)
+        })
+        setHolidays(() => [...holidayArray])
+      });
+  }
+
   function setUpMonthArray() {
-    const date = new Date();
-    const dayNumber = date.getDay();
     const totalDaysInMonth = new Date(year, monthNumber, 0).getDate()
     const startingDay = new Date(`${monthNumber}/1/${year}`).getDay()
 
@@ -60,10 +92,11 @@ export default function App() {
     }
 
     for (let i = 0; i < totalDaysInMonth; i++) {
-      dayArray.push({ dayNumber: i + 1, unavailable: false })
+      let dayOfTheWeek = daysOfTheWeek[dayArray.length % 7]
+      dayArray.push({ dayNumber: i + 1, unavailable: unavailableDays[dayOfTheWeek], defaultTimes: startTimes[dayOfTheWeek], holidays: holidays ? holidays[i] : [] })
     }
 
-    for (let i = 0; i <= (totalDaysInMonth % 7); i++) {
+    for (let i = 0; i < ((totalDaysInMonth - startingDay + 1) % 7); i++) {
       dayArray.push({ disabled: true })
     }
 
@@ -74,7 +107,6 @@ export default function App() {
     return function () {
       dayArray[index].unavailable = !dayArray[index].unavailable
       setArray(dayArray)
-      console.log(dayArray[index].unavailable)
     }
   }
 
@@ -84,20 +116,20 @@ export default function App() {
 
       <div className='calendar-body'>
         <div className='calendar-header'>
+          <h2>Sunday</h2>
           <h2>Monday</h2>
           <h2>Tuesday</h2>
           <h2>Wednesday</h2>
           <h2>Thrusday</h2>
           <h2>Friday</h2>
           <h2>Saturday</h2>
-          <h2>Sunday</h2>
         </div>
         <div className='calendar-day-body'>
           {dayArray.map((day, index) => {
             if (day.disabled && !day.dayNumber) {
               return <div key={index} className='day disabled-day'></div>
             }
-            return <Day dayNumber={day.dayNumber} unavailable={day.unavailable} setAvailibility={setAvailibility(index)} />
+            return <Day key={index} dayNumber={day.dayNumber} unavailable={day.unavailable} setAvailibility={setAvailibility(index)} defaultTimes={day.defaultTimes} holidays={day.holidays} />
           })}
         </div>
       </div>

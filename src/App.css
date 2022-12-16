@@ -1,3 +1,8 @@
+h1 {
+  font-size: 25px;
+  padding-left: 5px;
+}
+
 .calendar-body {
   max-width: 1134px;
   min-width: 1134px;
@@ -25,6 +30,10 @@
   flex-wrap: wrap;
 }
 
+#day-component p {
+  text-align: center;
+}
+
 .day {
   padding: 13px;
   min-width: 134px;
@@ -41,4 +50,12 @@
 .disabled-day {
   background: grey;
   border: 1px solid grey;
+}
+
+.grid-div {
+  margin-top: 15px;
+}
+
+.grid-div .MuiGrid2-container div:first-child {
+  border-top: 1px solid lightgrey
 }
