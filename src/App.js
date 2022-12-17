@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 import Day from './components/Day'
 import holidayapi from './components/secrets'
+import Button from '@mui/material/Button';
 
 export default function App() {
   const [monthNumber, setMonthNumber] = useState(new Date().getMonth() + 2 === 13 ? 1 : new Date().getMonth() + 2);
   const [year, setYear] = useState(monthNumber === 1 ? new Date().getFullYear() + 1 : new Date().getFullYear())
   const [dayArray, setArray] = useState([]);
   const [holidays, setHolidays] = useState([])
+  const [showDates, setShowDates] = useState(false)
 
   useEffect(() => {
     setUpMonthArray()
@@ -54,13 +56,13 @@ export default function App() {
   }
 
   const startTimes = {
-    Monday: [1800, 2200],
-    Tuesday: [1800, 2200],
-    Wednesday: [1800, 2200],
-    Thrusday: [1800, 2200],
-    Friday: [1800, 2200],
-    Saturday: [1000, 2200],
-    Sunday: [1000, 2200]
+    Monday: [1800, 1800],
+    Tuesday: [1800, 1800],
+    Wednesday: [1800, 1800],
+    Thrusday: [1800, 1800],
+    Friday: [1800, 1800],
+    Saturday: [1000, 1800],
+    Sunday: [1000, 1800]
   }
 
   async function setUpholidays() {
@@ -93,7 +95,7 @@ export default function App() {
 
     for (let i = 0; i < totalDaysInMonth; i++) {
       let dayOfTheWeek = daysOfTheWeek[dayArray.length % 7]
-      dayArray.push({ dayNumber: i + 1, unavailable: unavailableDays[dayOfTheWeek], defaultTimes: startTimes[dayOfTheWeek], holidays: holidays ? holidays[i] : [] })
+      dayArray.push({ dayNumber: i + 1, unavailable: unavailableDays[dayOfTheWeek], times: startTimes[dayOfTheWeek], holidays: holidays ? holidays[i] : [] })
     }
 
     for (let i = 0; i < ((totalDaysInMonth - startingDay + 1) % 7); i++) {
@@ -110,27 +112,87 @@ export default function App() {
     }
   }
 
+  const setTimeout = (index) => {
+    return function (newValue) {
+      dayArray[index].times = newValue
+      setArray(dayArray)
+    }
+  }
+
+  const getTimeString = (time) => {
+    let hourStartString = `${time}`
+    if (hourStartString.length === 3) {
+      hourStartString = `0${hourStartString}`
+    }
+    let hourStartingArray = hourStartString.split('')
+    hourStartingArray.splice(2, 0, ':')
+    hourStartString = hourStartingArray.join('')
+    hourStartString += ':00'
+    return hourStartString
+  }
+
+  const getDiscord = (day, timeArray) => {
+    if (!day) { return null}
+    // monthNumber, year
+    // "1995-12-17T03:24:00"
+    let hourStartString = getTimeString(timeArray[0])
+
+    let hourEndString = null
+    if (timeArray[0] !== timeArray[1]) {
+      hourEndString = getTimeString(timeArray[1])
+    }
+
+    let monthString = `${monthNumber}`
+    if (monthString.length === 1) {
+      monthString = `0${monthString}`
+    }
+    let dayString = `${day}`
+    if (dayString.length === 1) {
+      dayString = `0${dayString}`
+    }
+
+    const startDate = new Date(`${year}-${monthString}-${dayString}T${hourStartString}`)
+    const epochStartTime = startDate.getTime()
+
+    if (hourEndString) {
+      const endDate = new Date(`${year}-${monthString}-${dayString}T${hourEndString}`)
+      const epochEndtimeTime = endDate.getTime()
+      return `<t:${epochStartTime / 1000}:F> - <t:${epochEndtimeTime / 1000}:t>`
+    }
+    return `<t:${epochStartTime / 1000}:F>`
+  }
+
   return (
     <div className="App">
-      <h1>{monthsOfTheYear[monthNumber]} {year}</h1>
+      <div>
+        <h1>{monthsOfTheYear[monthNumber]} {year}</h1>
 
-      <div className='calendar-body'>
-        <div className='calendar-header'>
-          <h2>Sunday</h2>
-          <h2>Monday</h2>
-          <h2>Tuesday</h2>
-          <h2>Wednesday</h2>
-          <h2>Thrusday</h2>
-          <h2>Friday</h2>
-          <h2>Saturday</h2>
+        <div className='calendar-body'>
+          <div className='calendar-header'>
+            <h2>Sunday</h2>
+            <h2>Monday</h2>
+            <h2>Tuesday</h2>
+            <h2>Wednesday</h2>
+            <h2>Thrusday</h2>
+            <h2>Friday</h2>
+            <h2>Saturday</h2>
+          </div>
+          <div className='calendar-day-body'>
+            {dayArray.map((day, index) => {
+              if (day.disabled && !day.dayNumber) {
+                return <div key={index} className='day disabled-day'></div>
+              }
+              return <Day key={index} dayNumber={day.dayNumber} unavailable={day.unavailable} setAvailibility={setAvailibility(index)} times={day.times} holidays={day.holidays} />
+            })}
+          </div>
         </div>
-        <div className='calendar-day-body'>
-          {dayArray.map((day, index) => {
-            if (day.disabled && !day.dayNumber) {
-              return <div key={index} className='day disabled-day'></div>
-            }
-            return <Day key={index} dayNumber={day.dayNumber} unavailable={day.unavailable} setAvailibility={setAvailibility(index)} defaultTimes={day.defaultTimes} holidays={day.holidays} />
-          })}
+      </div>
+      <div className='sidebar'>
+        <Button onClick={() => setShowDates(!showDates)} disableElevation variant="contained">Get Me That Schedule!</Button>
+        <div className='discord-messages'>
+          {showDates ? dayArray.filter(day => !day.unavailable).map(day => {
+            return <p key={day.dayNumber}>{getDiscord(day.dayNumber, day.times)}</p>
+          }) : <div></div>}
         </div>
       </div>
     </div>

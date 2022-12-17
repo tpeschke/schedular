@@ -8,7 +8,7 @@ Day.defaultProps = {
 }
 
 export default function Day(props) {
-    const [value, setValue] = useState(props.defaultTimes);
+    const [value, setValue] = useState(props.times);
     const [unavailable, setUnavailable] = useState(props.unavailable);
     const [holidays, setHolidays] = useState(props.holidays);
 
@@ -17,6 +17,7 @@ export default function Day(props) {
     })
 
     const handleChange = (event, newValue) => {
+        props.setTimeout(newValue)
         setValue(newValue);
     };
 
@@ -46,7 +47,7 @@ export default function Day(props) {
             valueLabelDisplay="auto"
             step={30}
             min={1000}
-            max={2200}
+            max={1800}
         />
         <p>{valuetext(value[0])} - {valuetext(value[1])}</p>
         <div className='grid-div'>
