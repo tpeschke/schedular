@@ -3,6 +3,9 @@ import './App.css';
 import Day from './components/Day'
 import holidayapi from './components/secrets'
 import Button from '@mui/material/Button';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
 
 export default function App() {
   const [monthNumber, setMonthNumber] = useState(new Date().getMonth() + 2 === 13 ? 1 : new Date().getMonth() + 2);
@@ -132,7 +135,7 @@ export default function App() {
   }
 
   const getDiscord = (day, timeArray) => {
-    if (!day) { return null}
+    if (!day) { return null }
     let hourStartString = getTimeString(timeArray[0])
 
     let hourEndString = null
@@ -163,7 +166,13 @@ export default function App() {
   return (
     <div className="App">
       <div>
-        <h1>{monthsOfTheYear[monthNumber]} {year}</h1>
+        <AppBar position="static">
+          <Toolbar>
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+              {monthsOfTheYear[monthNumber]} {year}
+            </Typography>
+          </Toolbar>
+        </AppBar>
 
         <div className='calendar-body'>
           <div className='calendar-header'>
@@ -180,13 +189,13 @@ export default function App() {
               if (day.disabled && !day.dayNumber) {
                 return <div key={index} className='day disabled-day'></div>
               }
-              return <Day key={index} dayNumber={day.dayNumber} unavailable={day.unavailable} setAvailibility={setAvailibility(index)} times={day.times} holidays={day.holidays} />
+              return <Day key={index} dayNumber={day.dayNumber} unavailable={day.unavailable} setAvailibility={setAvailibility(index)} times={day.times} holidays={day.holidays} setTimeout={setTimeout(index)} />
             })}
           </div>
         </div>
       </div>
       <div className='sidebar'>
-        <Button onClick={() => setShowDates(!showDates)} disableElevation variant="contained">Get Me That Schedule!</Button>
+        <Button onClick={() => setShowDates(!showDates)} disableElevation variant="contained" color="secondary">Get Me That Schedule!</Button>
         <div className='discord-messages'>
           {showDates ? dayArray.filter(day => !day.unavailable).map(day => {
             return <p key={day.dayNumber}>{getDiscord(day.dayNumber, day.times)}</p>

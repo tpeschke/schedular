@@ -10,11 +10,6 @@ Day.defaultProps = {
 export default function Day(props) {
     const [value, setValue] = useState(props.times);
     const [unavailable, setUnavailable] = useState(props.unavailable);
-    const [holidays, setHolidays] = useState(props.holidays);
-
-    useEffect(() => {
-        // setHolidays(() => [...props.holidays])
-    })
 
     const handleChange = (event, newValue) => {
         props.setTimeout(newValue)

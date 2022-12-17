@@ -11,7 +11,6 @@ h1 {
 .calendar-body {
   max-width: 1134px;
   min-width: 1134px;
-  overflow: auto;
 }
 
 .calendar-header {
@@ -20,13 +19,13 @@ h1 {
 }
 
 .calendar-header h2 {
-  border: 1px solid whitesmoke;
+  border-left: 1px solid lightgray;
+  border-right: 1px solid lightgray;
   padding: 5px 10px;
   max-width: 140px;
   min-width: 140px;
   text-align: center;
-  background-color: #222;
-  color: whitesmoke
+  background: whitesmoke;
 }
 
 .calendar-day-body {
@@ -45,20 +44,20 @@ h1 {
   max-width: 134px;
   min-height: 140px;
   max-height: 140px;
-  overflow: hidden;
-  border: 1px solid;
-  background: whitesmoke;
+  border: 1px solid lightgray;
   display: flex;
   flex-direction: column;
 }
 
 .disabled-day {
-  background: grey;
-  border: 1px solid grey;
+  border: 1px solid whitesmoke;
+  background: whitesmoke;
 }
 
 .grid-div {
   margin-top: 15px;
+  overflow: hidden;
+  text-align: center;
 }
 
 .grid-div .MuiGrid2-container div:first-child {
@@ -67,8 +66,7 @@ h1 {
 
 .sidebar {
   background: whitesmoke;
-  margin: 25px 15px;
-  padding-top: 15px;
+  padding: 15px;
   width: 23%;
   text-align: center;
 }
