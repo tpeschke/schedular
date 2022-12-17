@@ -1,7 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Slider from '@mui/material/Slider';
 import Button from '@mui/material/Button';
-import Grid from '@mui/material/Unstable_Grid2';
+import Popover from '@mui/material/Popover';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import NewReleasesIcon from '@mui/icons-material/NewReleases';
+import Tooltip from '@mui/material/Tooltip';
 
 Day.defaultProps = {
     holidays: []
@@ -23,16 +27,68 @@ export default function Day(props) {
         return `${value} am`
     }
 
+    const getTimeRangeDisplay = (times) => {
+        if (times[0] === times[1]) {
+            return valuetext(times[0])
+        }
+        return `${valuetext(times[0])} - ${valuetext(times[1])}`
+    }
+
     const setAvailibility = () => {
         props.setAvailibility()
         setUnavailable(!unavailable)
     }
+
+    const [anchorEl, setAnchorEl] = React.useState(null);
+
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    const open = Boolean(anchorEl);
+    const id = open ? 'simple-popover' : undefined;
 
     if (unavailable) {
         return (<div className='day'>
             <Button onClick={setAvailibility} disableElevation variant="text">{props.dayNumber}</Button>
         </div>)
     }
+
+    let holidays = <div></div>
+    if (props.holidays && props.holidays.length > 0) {
+        holidays = (<div className='holidays'>
+            <Button variant="text">
+                <Tooltip title="Holidays">
+                    <NewReleasesIcon fontSize='medium' color="error" aria-describedby={id} onClick={handleClick} />
+                </Tooltip>
+            </Button>
+            <Popover
+                id={id}
+                open={open}
+                anchorEl={anchorEl}
+                onClose={handleClose}
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'center',
+                }}
+                transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'center',
+                }}
+            >
+                <Typography sx={{ p: 2 }}>
+                    <Grid container spacing={1}>
+                        {props.holidays ? props.holidays.map(holiday => <Grid item key={holiday} xs={16}>{holiday}</Grid>) : <span></span>}
+                    </Grid>
+                </Typography>
+            </Popover>
+        </div>)
+    }
+
     return (<div className='day' id='day-component'>
         <Button onClick={setAvailibility} disableElevation variant="text">{props.dayNumber}</Button>
         <Slider
@@ -44,12 +100,8 @@ export default function Day(props) {
             min={1000}
             max={1800}
         />
-        <p>{valuetext(value[0])} - {valuetext(value[1])}</p>
-        <div className='grid-div'>
-            <Grid container spacing={1}>
-                {props.holidays ? props.holidays.map(holiday => <Grid key={holiday} xs={16}>{holiday}</Grid>) : <div></div>}
-            </Grid>
-        </div>
+        <p>{getTimeRangeDisplay(value)}</p>
+        {holidays}
     </div>)
 }
 

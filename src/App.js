@@ -195,12 +195,12 @@ export default function App() {
         </div>
       </div>
       <div className='sidebar'>
-        <Button onClick={() => setShowDates(!showDates)} disableElevation variant="contained" color="secondary">Get Me That Schedule!</Button>
         <div className='discord-messages'>
           {showDates ? dayArray.filter(day => !day.unavailable).map(day => {
             return <p key={day.dayNumber}>{getDiscord(day.dayNumber, day.times)}</p>
           }) : <div></div>}
         </div>
+        <Button onClick={() => setShowDates(!showDates)} disableElevation variant="contained" color="error">Get Me That Schedule!</Button>
       </div>
     </div>
   );
