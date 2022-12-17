@@ -133,8 +133,6 @@ export default function App() {
 
   const getDiscord = (day, timeArray) => {
     if (!day) { return null}
-    // monthNumber, year
-    // "1995-12-17T03:24:00"
     let hourStartString = getTimeString(timeArray[0])
 
     let hourEndString = null
