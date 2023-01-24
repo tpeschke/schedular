@@ -49,7 +49,7 @@ export default function App() {
   }
 
   const unavailableDays = {
-    Monday: true,
+    Monday: false,
     Tuesday: false,
     Wednesday: true,
     Thrusday: false,
@@ -70,7 +70,7 @@ export default function App() {
 
   async function setUpholidays() {
     const totalDaysInMonth = new Date(year, monthNumber, 0).getDate()
-    let endpoint = `${holidayapi.endpoint}?country=US&year=${year - 2}&month=${monthNumber}&key=${holidayapi.apiKey}`
+    let endpoint = `${holidayapi.endpoint}?country=US&year=${year - 1}&month=${monthNumber}&key=${holidayapi.apiKey}`
     await fetch(endpoint)
       .then(res => res.json())
       .then(data => {
