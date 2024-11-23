@@ -35,7 +35,7 @@ export default function App() {
   }
   const monthsOfTheYear = {
     1: 'January',
-    2: 'Febuary',
+    2: 'February',
     3: 'March',
     4: 'April',
     5: 'May',
@@ -48,11 +48,14 @@ export default function App() {
     12: 'December'
   }
 
+  // NOTE TO SELF: need to use node 16.15.1 on this project
+  // nvm use 16.15.1
+  
   const unavailableDays = {
-    Monday: false,
-    Tuesday: false,
+    Monday: true,
+    Tuesday: true,
     Wednesday: true,
-    Thrusday: false,
+    Thrusday: true,
     Friday: false,
     Saturday: false,
     Sunday: false
@@ -60,12 +63,12 @@ export default function App() {
 
   const startTimes = {
     Monday: [1800, 1800],
-    Tuesday: [1800, 1800],
+    Tuesday: [1900, 1900],
     Wednesday: [1800, 1800],
     Thrusday: [1800, 1800],
     Friday: [1800, 1800],
     Saturday: [1000, 1800],
-    Sunday: [1000, 1800]
+    Sunday: [1000, 1600]
   }
 
   async function setUpholidays() {
