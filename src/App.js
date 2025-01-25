@@ -52,10 +52,10 @@ export default function App() {
   // nvm use 16.15.1
   
   const unavailableDays = {
-    Monday: true,
-    Tuesday: true,
-    Wednesday: true,
-    Thrusday: true,
+    Monday: false,
+    Tuesday: false,
+    Wednesday: false,
+    Thrusday: false,
     Friday: false,
     Saturday: false,
     Sunday: false
@@ -63,7 +63,7 @@ export default function App() {
 
   const startTimes = {
     Monday: [1800, 1800],
-    Tuesday: [1900, 1900],
+    Tuesday: [1800, 1800],
     Wednesday: [1800, 1800],
     Thrusday: [1800, 1800],
     Friday: [1800, 1800],
