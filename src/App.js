@@ -8,7 +8,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
 export default function App() {
-  const [monthNumber, setMonthNumber] = useState(new Date().getMonth() + 1 === 13 ? 1 : new Date().getMonth() + 1);
+  const [monthNumber, setMonthNumber] = useState(new Date().getMonth() + 2 === 13 ? 1 : new Date().getMonth() + 2);
   const [year, setYear] = useState(monthNumber === 1 ? new Date().getFullYear() + 1 : new Date().getFullYear())
   const [dayArray, setArray] = useState([]);
   const [holidays, setHolidays] = useState([])
