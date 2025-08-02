@@ -8,7 +8,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
 export default function App() {
-  const [monthNumber, setMonthNumber] = useState(new Date().getMonth() + 2 === 13 ? 1 : new Date().getMonth() + 2);
+  const [monthNumber, setMonthNumber] = useState(new Date().getMonth() + 1 === 13 ? 1 : new Date().getMonth() + 1);
   const [year, setYear] = useState(monthNumber === 1 ? new Date().getFullYear() + 1 : new Date().getFullYear())
   const [dayArray, setArray] = useState([]);
   const [holidays, setHolidays] = useState([])
@@ -29,7 +29,7 @@ export default function App() {
     1: 'Monday',
     2: 'Tuesday',
     3: 'Wednesday',
-    4: 'Thrusday',
+    4: 'Thursday',
     5: 'Friday',
     6: 'Saturday',
   }
@@ -55,18 +55,18 @@ export default function App() {
     Monday: false,
     Tuesday: false,
     Wednesday: false,
-    Thrusday: false,
+    Thursday: false,
     Friday: false,
     Saturday: false,
     Sunday: false
   }
 
   const startTimes = {
-    Monday: [1800, 1800],
-    Tuesday: [1800, 1800],
-    Wednesday: [1800, 1800],
-    Thrusday: [1800, 1800],
-    Friday: [1800, 1800],
+    Monday: [1600, 1800],
+    Tuesday: [1600, 1800],
+    Wednesday: [1600, 1800],
+    Thursday: [1600, 1800],
+    Friday: [1600, 1800],
     Saturday: [1000, 1800],
     Sunday: [1000, 1600]
   }
@@ -183,7 +183,7 @@ export default function App() {
             <h2>Monday</h2>
             <h2>Tuesday</h2>
             <h2>Wednesday</h2>
-            <h2>Thrusday</h2>
+            <h2>Thursday</h2>
             <h2>Friday</h2>
             <h2>Saturday</h2>
           </div>
