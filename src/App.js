@@ -7,6 +7,9 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
+// NOTE TO SELF: need to use node 16.15.1 on this project
+// nvm use 16.15.1
+
 export default function App() {
   const [monthNumber, setMonthNumber] = useState(new Date().getMonth() + 2 === 13 ? 1 : new Date().getMonth() + 2);
   const [year, setYear] = useState(monthNumber === 1 ? new Date().getFullYear() + 1 : new Date().getFullYear())
@@ -20,7 +23,7 @@ export default function App() {
 
   useEffect(() => {
     if (holidays.length === 0) {
-      setUpholidays()
+      setUpHolidays()
     }
   })
 
@@ -48,9 +51,6 @@ export default function App() {
     12: 'December'
   }
 
-  // NOTE TO SELF: need to use node 16.15.1 on this project
-  // nvm use 16.15.1
-  
   const unavailableDays = {
     Monday: false,
     Tuesday: false,
@@ -71,7 +71,7 @@ export default function App() {
     Sunday: [1000, 1600]
   }
 
-  async function setUpholidays() {
+  async function setUpHolidays() {
     const totalDaysInMonth = new Date(year, monthNumber, 0).getDate()
     let endpoint = `${holidayapi.endpoint}?country=US&year=${year - 1}&month=${monthNumber}&key=${holidayapi.apiKey}`
     await fetch(endpoint)
