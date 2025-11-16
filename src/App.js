@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import './App.css';
 import Day from './components/Day'
 import holidayapi from './components/secrets'
@@ -11,8 +11,8 @@ import Typography from '@mui/material/Typography';
 // nvm use 16.15.1
 
 export default function App() {
-  const [monthNumber, setMonthNumber] = useState(new Date().getMonth() + 2 === 13 ? 1 : new Date().getMonth() + 2);
-  const [year, setYear] = useState(monthNumber === 1 ? new Date().getFullYear() + 1 : new Date().getFullYear())
+  const [monthNumber] = useState(new Date().getMonth() + 2 === 13 ? 1 : new Date().getMonth() + 2);
+  const [year] = useState(monthNumber === 1 ? new Date().getFullYear() + 1 : new Date().getFullYear())
   const [dayArray, setArray] = useState([]);
   const [holidays, setHolidays] = useState([])
   const [showDates, setShowDates] = useState(false)
@@ -52,21 +52,21 @@ export default function App() {
   }
 
   const unavailableDays = {
-    Monday: false,
-    Tuesday: false,
-    Wednesday: false,
-    Thursday: false,
-    Friday: false,
+    Monday: true,
+    Tuesday: true,
+    Wednesday: true,
+    Thursday: true,
+    Friday: true,
     Saturday: false,
     Sunday: false
   }
 
   const startTimes = {
-    Monday: [1600, 1800],
-    Tuesday: [1600, 1800],
-    Wednesday: [1600, 1800],
-    Thursday: [1600, 1800],
-    Friday: [1600, 1800],
+    Monday: [1000, 1800],
+    Tuesday: [1000, 1800],
+    Wednesday: [1000, 1800],
+    Thursday: [1000, 1800],
+    Friday: [1000, 1800],
     Saturday: [1000, 1800],
     Sunday: [1000, 1600]
   }
