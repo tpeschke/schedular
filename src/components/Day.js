@@ -52,12 +52,6 @@ export default function Day(props) {
     const open = Boolean(anchorEl);
     const id = open ? 'simple-popover' : undefined;
 
-    if (unavailable) {
-        return (<div className='day'>
-            <Button onClick={setAvailibility} disableElevation variant="text">{props.dayNumber}</Button>
-        </div>)
-    }
-
     let holidays = <div></div>
     if (props.holidays && props.holidays.length > 0) {
         holidays = (<div className='holidays'>
@@ -86,6 +80,13 @@ export default function Day(props) {
                     </Grid>
                 </Typography>
             </Popover>
+        </div>)
+    }
+
+    if (unavailable) {
+        return (<div className='day'>
+            <Button onClick={setAvailibility} disableElevation variant="text">{props.dayNumber}</Button>
+            {holidays}
         </div>)
     }
 
