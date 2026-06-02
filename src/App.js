@@ -62,13 +62,13 @@ export default function App() {
   }
 
   const startTimes = {
-    Monday: [1000, 1800],
-    Tuesday: [1000, 1800],
-    Wednesday: [1000, 1800],
-    Thursday: [1000, 1800],
-    Friday: [1000, 1800],
-    Saturday: [1000, 1800],
-    Sunday: [1000, 1600]
+    Monday: [1200, 1800],
+    Tuesday: [1200, 1800],
+    Wednesday: [1200, 1800],
+    Thursday: [1200, 1800],
+    Friday: [1200, 1800],
+    Saturday: [1200, 1800],
+    Sunday: [1200, 1600]
   }
 
   async function setUpHolidays() {
