@@ -9,6 +9,7 @@ import Typography from '@mui/material/Typography';
 
 // NOTE TO SELF: need to use node 16.15.1 on this project
 // nvm use 16.15.1
+// normal: 25.1.0
 
 export default function App() {
   const [monthNumber] = useState(new Date().getMonth() + 2 === 13 ? 1 : new Date().getMonth() + 2);
